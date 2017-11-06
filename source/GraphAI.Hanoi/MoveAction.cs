@@ -25,26 +25,29 @@ namespace GraphAI.Hanoi
         public int SourceRod { get; }
         public int DestinationRod { get; }
 
-        public GameState GetResult()
+        public GameState Result
         {
-            var rods = new Rod[this.OriginalState.Rods.Count];
-            for( int i = 0; i < rods.Length; ++i )
+            get
             {
-                var parentRod = this.OriginalState.Rods[i];
-                if( i == this.SourceRod )
+                var rods = new Rod[this.OriginalState.Rods.Count];
+                for( int i = 0; i < rods.Length; ++i )
                 {
-                    rods[i] = parentRod.RemoveFromTop();
+                    var parentRod = this.OriginalState.Rods[i];
+                    if( i == this.SourceRod )
+                    {
+                        rods[i] = parentRod.RemoveFromTop();
+                    }
+                    else if( i == this.DestinationRod )
+                    {
+                        rods[i] = parentRod.AddOnTop(this.OriginalState.Rods[this.SourceRod].Top);
+                    }
+                    else
+                    {
+                        rods[i] = new Rod(parentRod.Disks.ToArray());
+                    }
                 }
-                else if( i == this.DestinationRod )
-                {
-                    rods[i] = parentRod.AddOnTop(this.OriginalState.Rods[this.SourceRod].Top);
-                }
-                else
-                {
-                    rods[i] = new Rod(parentRod.Disks.ToArray());
-                }
+                return new GameState(rods);
             }
-            return new GameState(rods);
         }
 
         public override string ToString()
@@ -52,6 +55,7 @@ namespace GraphAI.Hanoi
             return $"{this.OriginalState.Rods[this.SourceRod].Top}: {this.SourceRod} --> {this.DestinationRod}";
         }
 
-        IState IAction.GetResult() => this.GetResult();
+        IState IAction.OriginalState => this.OriginalState;
+        IState IAction.Result => this.Result;
     }
 }

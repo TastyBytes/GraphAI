@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GraphAI
+﻿namespace GraphAI
 {
     public interface IAction
     {
-        IState GetResult();
+        IState OriginalState { get; }
+        IState Result { get; }
     }
 }
