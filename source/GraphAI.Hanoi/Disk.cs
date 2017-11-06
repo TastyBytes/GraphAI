@@ -14,6 +14,11 @@ namespace GraphAI.Hanoi
 
         public int Size { get; }
 
+        public override string ToString()
+        {
+            return this.Size.ToString();
+        }
+
         public bool Equals( Disk other )
         {
             return this.Size == other.Size;

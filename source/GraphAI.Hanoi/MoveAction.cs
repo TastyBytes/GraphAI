@@ -49,7 +49,7 @@ namespace GraphAI.Hanoi
 
         public override string ToString()
         {
-            return $"{this.SourceRod} --> {this.DestinationRod}";
+            return $"{this.OriginalState.Rods[this.SourceRod].Top}: {this.SourceRod} --> {this.DestinationRod}";
         }
 
         IState IAction.GetResult() => this.GetResult();
