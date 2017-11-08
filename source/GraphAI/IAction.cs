@@ -2,7 +2,7 @@
 {
     public interface IAction
     {
-        IState OriginalState { get; }
+        IState Source { get; }
         IState Result { get; }
     }
 }

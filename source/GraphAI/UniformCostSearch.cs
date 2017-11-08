@@ -71,7 +71,7 @@ namespace GraphAI
 
         protected override void OnNeighborFound( Node node, bool visited )
         {
-            int index = IndexOf(this.nodesNotVisited, node.State);
+            int index = IndexOf(this.nodesNotVisited, node.Result);
             bool waitingToBeVisited = index != -1;
 
             bool nodeIsKnown = visited || waitingToBeVisited;

@@ -12,19 +12,16 @@ namespace GraphAI
 
         protected class Node
         {
-            internal Node( Node parent, TAction cause, TState state )
+            internal Node( Node parent, TAction cause, TState result )
             {
-                if( state == null )
-                    throw new ArgumentNullException(nameof(state));
-
                 this.Parent = parent;
                 this.Cause = cause;
-                this.State = state;
+                this.Result = result != null ? result : throw new ArgumentNullException(nameof(result));
             }
 
             internal Node Parent { get; }
             internal TAction Cause { get; }
-            internal TState State { get; }
+            internal TState Result { get; }
             internal bool IsSeed => this.Parent == null;
         }
 
@@ -60,7 +57,7 @@ namespace GraphAI
 
             while( true )
             {
-                states.Insert(0, node.State);
+                states.Insert(0, node.Result);
 
                 if( node.IsSeed )
                 {
@@ -81,7 +78,7 @@ namespace GraphAI
         {
             for( int i = 0; i < list.Count; ++i )
             {
-                if( list[i].State.Equals(state) )
+                if( list[i].Result.Equals(state) )
                     return i;
             }
             return -1;
@@ -122,11 +119,11 @@ namespace GraphAI
                 // check if goal was reached
                 // NOTE: Dijkstra and others depend on this NOT happening immediately when a new neighbor is found,
                 //       because the cost of reaching it may change between now and when it is extended.
-                if( isGoal(node.State) )
+                if( isGoal(node.Result) )
                     this.goal = node;
 
                 // extend node
-                var actions = this.problemSpace.Extend(node.State);
+                var actions = this.problemSpace.Extend(node.Result);
 
                 // check results
                 if( (actions?.Length ?? 0) != 0 )

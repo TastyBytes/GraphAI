@@ -9,11 +9,16 @@ namespace GraphAI
     {
         public Path( IAction[] actions, IState[] states )
         {
-            if( (actions?.Length ?? 0) == 0 )
-                throw new ArgumentException("No actions!");
-
             if( (states?.Length ?? 0) == 0 )
                 throw new ArgumentException("No states!");
+
+            if( (actions?.Length ?? 0) == 0 )
+            {
+                if( states.Length != 1 )
+                    throw new ArgumentException("No actions!");
+                else
+                    actions = new IAction[0];
+            }
 
             if( actions.Where(a => a == null).Count() != 0 )
                 throw new ArgumentException("null action found!");
